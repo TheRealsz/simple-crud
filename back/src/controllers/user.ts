@@ -12,11 +12,8 @@ export interface TypedRequestBody<T> extends Express.Request {
     body: T
 }
 
-// Aqui no video era getUsers = (_, res), porem como ele mesmo fala que o usuario nao vai enviar nada, estou retirando o _ e deixando apenas 
-// O response
-
-
-export const getUsers = (res: Response) => {
+// Tirar o any
+export const getUsers = (_: any,res: Response) => {
     const q = "SELECT * FROM users"
 
     db.query(q, (err, data) => {
@@ -48,7 +45,7 @@ export const postUser = (req: TypedRequestBody<{ nome: string, email: string, te
     })
 }
 
-export const putUser = (req: TypedRequestBody<{ ID: number, nome: string, email: string, tel: string }>, res: Response) => {
+export const putUser = (req: TypedRequestBody<{ ID: string, nome: string, email: string, tel: string }>, res: Response) => {
     if (!req.body) {
         return res.status(400).json("Corpo da requisição vazio!");
     }
@@ -70,7 +67,7 @@ export const putUser = (req: TypedRequestBody<{ ID: number, nome: string, email:
     })
 }
 
-export const deleteUser = (req: TypedRequestBody<{ ID: number }>, res: Response) => {
+export const deleteUser = (req: TypedRequestBody<{ ID: String }>, res: Response) => {
     if (!req.body) {
         return res.status(400).json("Erro na requisição!");
     }

@@ -36,8 +36,8 @@ function App() {
     <div className="w-full max-w-3xl mt-5 flex flex-col items-center gap-4 text-slate-50">
       <Toaster />
       <h1 className="text-3xl">Usuarios</h1>
-      <Form />
-      <Grid users={users}/>
+      <Form onEdit={onEdit} setOnEdit={setOnEdit} getUsers={getUsers} />
+      <Grid users={users} setUsers={setUsers} setOnEdit={setOnEdit}/>
     </div>
   );
 }

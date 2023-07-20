@@ -3,6 +3,7 @@ import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast'
 import { MdModeEdit, MdDelete } from 'react-icons/md'
 
+
 // Tipando as informações que irao chegar da API e o qual o codigo ira tratar
 type Users = {
     ID: String;
@@ -11,13 +12,28 @@ type Users = {
     tel: String;
 }
 
-export function Grid({ users } : any) {
+export function Grid({ users, setUsers, setOnEdit } : any) {
 
-    function handleDelete(){
-
+    function handleEdit(item: Users) {
+        setOnEdit(item)
     }
 
-    const successToast = () => toast.success("Teste", { style: { backgroundColor: "green", color: "#fff", top: "50px", position: "relative" }, });
+    async function handleDelete(ID : String){
+        try {
+            const response = await axios.delete(`https://localhost:8800/${ID}`)
+            const { data } = response;
+            // Cria um novo array filtrando todos os outros usuarios menos o que foi excluido
+            const NewArray = users.filter((user : any) => user.ID !== ID)
+            setUsers(NewArray);
+            toast.success(data, { style: { backgroundColor: "green", color: "#fff", top: "50px", position: "relative" }})
+
+        } catch (data: any) {
+            toast.error(data, { style: { backgroundColor: "red", color: "#fff", top: "50px", position: "relative" }})
+        }
+
+        setOnEdit(null)
+    }
+    
     return (
         <table className="w-full bg-slate-800 p-5 shadow-default max-w-3xl mx-5 my-auto break-all rounded-md">
             {/* <Toaster /> */}
@@ -41,10 +57,10 @@ export function Grid({ users } : any) {
                         <td className="w-1/4 pt-4 items-start pr-5">{item.email}</td>
                         <td className="w-1/5 pt-4 items-start pr-5 max-sm:hidden">{item.tel}</td>
                         <td className='w-1/12 pt-4 items-center pr-5'>
-                            <MdModeEdit className='hover:text-yellow-400 text-xl'/>
+                            <MdModeEdit className='hover:text-yellow-400 text-xl' onClick={() => handleEdit(item)}/>
                         </td>
                         <td className='w-1/12 pt-4 items-center'>
-                            <MdDelete className='hover:text-red-500 text-xl' onClick={() => handleDelete()}/>
+                            <MdDelete className='hover:text-red-500 text-xl' onClick={() => handleDelete(item.ID)}/>
                         </td>
                     </tr>
                 ))}
