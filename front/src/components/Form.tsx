@@ -7,7 +7,7 @@ import toast, { Toaster } from 'react-hot-toast'
 // Como tipar isso corretamente
 export function Form({ onEdit, setOnEdit, getUsers }: any) {
 
-    const ref = useRef<HTMLFormElement>(null);
+    const ref = useRef<HTMLFormElement | null>(null);
 
     // Nao entendi
     useEffect(() => {
@@ -30,8 +30,6 @@ export function Form({ onEdit, setOnEdit, getUsers }: any) {
         const name = user.nome.value;
         const email = user.email.value;
         const tel = user.telefone.value;
-
-
         if (
             !name ||
             !email ||
@@ -48,30 +46,31 @@ export function Form({ onEdit, setOnEdit, getUsers }: any) {
                     tel: tel,
                 })
                 const { data } = response
-                toast.success(data, { style: { backgroundColor: "green", color: "#fff", top: "50px", position: "relative" } })
+                toast.success(data, { style: { backgroundColor: "green", color: "#fff", top: "50px", position: "relative" }})
             } catch (data: any) {
                 toast.error(data)
             }
         }
         else {
             try {
+              
                 const response = await axios.post("http://localhost:8800/", {
-                    nome: name,
-                    email: email,
-                    tel: tel,
+                  nome: name,
+                  email: email,
+                  tel: tel,
                 });
                 const { data } = response
-                toast.success(data, { style: { backgroundColor: "green", color: "#fff", top: "50px", position: "relative" } })
+                toast.success(data, { style: { backgroundColor: "green", color: "#fff", top: "50px", position: "relative" }})
             }
             // Tentar acessar a mensagem dentro do data para retornar o erro
             catch (error) {
-                toast.error("Erro ao cadastrar o usuario", { style: { backgroundColor: "red", color: "#fff", top: "50px", position: "relative" } })
+                toast.error("Erro ao cadastrar o usuario", { style: { backgroundColor: "red", color: "#fff", top: "50px", position: "relative" }})
             }
         }
 
-        user.name.value = ""
-        user.email.value = ""
-        user.telefone.value = ""
+        if (ref.current){
+            ref.current.reset()
+        }
 
         setOnEdit(null)
         getUsers()
