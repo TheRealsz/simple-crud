@@ -20,10 +20,10 @@ export function Grid({ users, setUsers, setOnEdit } : any) {
 
     async function handleDelete(ID : String){
         try {
-            const response = await axios.delete(`https://localhost:8800/${ID}`)
+            const response = await axios.delete("http://localhost:8800/" + ID)
             const { data } = response;
             // Cria um novo array filtrando todos os outros usuarios menos o que foi excluido
-            const NewArray = users.filter((user : any) => user.ID !== ID)
+            const NewArray = users.filter((user : Users) => user.ID !== ID)
             setUsers(NewArray);
             toast.success(data, { style: { backgroundColor: "green", color: "#fff", top: "50px", position: "relative" }})
 
@@ -35,7 +35,7 @@ export function Grid({ users, setUsers, setOnEdit } : any) {
     }
     
     return (
-        <table className="w-full bg-slate-800 p-5 shadow-default max-w-3xl mx-5 my-auto break-all rounded-md">
+        <table className="w-full bg-slate-800 shadow-default max-w-3xl mx-5 my-auto break-all rounded-md">
             {/* <Toaster /> */}
             <thead>
                 <tr className="text-slate-50 border-b border-inset border-slate-500">

@@ -17,8 +17,8 @@ function App() {
 
   async function getUsers() {
     try {
-      const response = await axios.get("http://localhost:8800")
-      // Ordem alfabetica
+      const response = await axios.get("http://localhost:8800/")
+      // Ordem alfabetica -> Trocar para organização por ID
       setUsers(response.data.sort((a: User, b: User) => (a.nome > b.nome ? 1 : -1)))
     } catch (error) {
       toast.error("Algo deu errado, tente novamente!")
@@ -33,7 +33,7 @@ function App() {
   )
 
   return (
-    <div className="w-full max-w-3xl mt-5 flex flex-col items-center gap-4 text-slate-50">
+    <div className="w-full max-w-4xl mt-5 flex flex-col items-center gap-6 text-slate-50">
       <Toaster />
       <h1 className="text-3xl">Usuarios</h1>
       <Form onEdit={onEdit} setOnEdit={setOnEdit} getUsers={getUsers} />
