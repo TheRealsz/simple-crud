@@ -1,11 +1,18 @@
-import { useEffect, useRef } from 'react';
+import { Dispatch, SetStateAction, useEffect, useRef } from 'react';
 import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast'
 
 // gap = distancia entre os elementos
 
+
+interface FormProps {
+    onEdit : null | UserData,
+    setOnEdit : Dispatch<SetStateAction<null | UserData>>,
+    getUsers : () => void
+}
+
 // Como tipar isso corretamente
-export function Form({ onEdit, setOnEdit, getUsers }: any) {
+export function Form({ onEdit, setOnEdit, getUsers }: FormProps) {
 
     const ref = useRef<HTMLFormElement | null>(null);
 
@@ -26,10 +33,10 @@ export function Form({ onEdit, setOnEdit, getUsers }: any) {
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault()
 
-        const user: any = ref.current
-        const name = user.nome.value;
-        const email = user.email.value;
-        const tel = user.telefone.value;
+        const user: HTMLFormElement | null = ref.current
+        const name = user?.nome.value;
+        const email = user?.email.value;
+        const tel = user?.telefone.value;
         if (
             !name ||
             !email ||
@@ -47,13 +54,12 @@ export function Form({ onEdit, setOnEdit, getUsers }: any) {
                 })
                 const { data } = response
                 toast.success(data, { style: { backgroundColor: "green", color: "#fff", top: "50px", position: "relative" }})
-            } catch (data: any) {
-                toast.error(data)
+            } catch (error) {
+                toast.error("Erro ao atualizar o usuario", { style: { backgroundColor: "red", color: "#fff", top: "50px", position: "relative" }})
             }
         }
         else {
             try {
-              
                 const response = await axios.post("http://localhost:8800/", {
                   nome: name,
                   email: email,

@@ -1,20 +1,20 @@
-import react from 'react';
+import {Dispatch, SetStateAction,} from 'react';
 import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast'
 import { MdModeEdit, MdDelete } from 'react-icons/md'
 
 
 // Tipando as informações que irao chegar da API e o qual o codigo ira tratar
-type Users = {
-    ID: String;
-    nome: String;
-    email: String;
-    tel: String;
+
+interface GridProps {
+    users: Array<UserData>,
+    setUsers : Dispatch<SetStateAction<Array<UserData>>>,
+    setOnEdit : Dispatch<SetStateAction<null | UserData>>
 }
 
-export function Grid({ users, setUsers, setOnEdit } : any) {
+export function Grid({ users, setUsers, setOnEdit } : GridProps) {
 
-    function handleEdit(item: Users) {
+    function handleEdit(item: UserData) {
         setOnEdit(item)
     }
 
@@ -23,7 +23,7 @@ export function Grid({ users, setUsers, setOnEdit } : any) {
             const response = await axios.delete("http://localhost:8800/" + ID)
             const { data } = response;
             // Cria um novo array filtrando todos os outros usuarios menos o que foi excluido
-            const NewArray = users.filter((user : Users) => user.ID !== ID)
+            const NewArray = users.filter((user : UserData) => user.ID !== ID)
             setUsers(NewArray);
             toast.success(data, { style: { backgroundColor: "green", color: "#fff", top: "50px", position: "relative" }})
 
@@ -50,7 +50,7 @@ export function Grid({ users, setUsers, setOnEdit } : any) {
             <tbody>
                 {/* Ira gerar uma linha para cada usuario existente dentro do banco, pegando as informações disponibilizadas e jogando-as dentro
                 das cedulas */}
-                {users.map ((item: Users, index: React.Key | null | undefined) => (
+                {users.map ((item: UserData, index: React.Key | null | undefined) => (
                     <tr key={index}>
                         <td className="w-1/4 pt-4 items-start pr-5">{item.ID}</td>
                         <td className="w-1/4 pt-4 items-start pr-5">{item.nome}</td>

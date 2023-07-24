@@ -11,9 +11,10 @@ type User = {
   nome: String;
 }
 
+
 function App() {
-  const [users, setUsers] = useState([])
-  const [onEdit, setOnEdit] = useState(null)
+  const [users, setUsers] = useState<Array<UserData>>([])
+  const [onEdit, setOnEdit] = useState<null | UserData>(null)
 
   async function getUsers() {
     try {

@@ -1,4 +1,4 @@
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { db } from '../db';
 
 // Onde ira ficar as funcoes de manipulação de dados
@@ -13,8 +13,7 @@ export interface TypedRequest<T, P> extends Express.Request {
     params: P
 }
 
-// Tirar o any
-export const getUsers = (_: any, res: Response) => {
+export const getUsers = (req: Request, res: Response) => {
     const q = "SELECT * FROM users"
 
     db.query(q, (err, data) => {
@@ -26,11 +25,9 @@ export const getUsers = (_: any, res: Response) => {
 }
 
 export const postUser = (req: TypedRequest<{ nome: string, email: string, tel: string }, {}>, res: Response) => {
-    // Tratamento de erro caso nao haja req com body
     if (!req.body) {
         return res.status(400).json("Corpo da requisição vazio!");
     }
-    // .
     const { nome, email, tel } = req.body;
     const q = "INSERT INTO users (nome, email, tel) VALUES (?, ?, ?);"
 
@@ -47,7 +44,6 @@ export const postUser = (req: TypedRequest<{ nome: string, email: string, tel: s
     })
 }
 
-// Preciso de ambos os parametros? Acessar o ID como string tem problema, sendo que no banco esta como int
 export const putUser = (req: TypedRequest<{ nome: string, email: string, tel: string }, { ID: string }>, res: Response) => {
     if (!req.body || !req.params) {
         return res.status(400).json("Corpo da requisição vazio!");
