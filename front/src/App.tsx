@@ -4,8 +4,8 @@ import { Grid } from "./components/Grid"
 import axios from "axios"
 import toast, { Toast, Toaster } from "react-hot-toast"
 
-// Colocar toaster
-// Tirar os any
+// Ordem alfabetica -> Trocar para organização por ID
+// Entender melhor o funcionamento do setOnEdit e onEdit, tanto as chamadas pelo app, quanto pelo form e grid
 
 type User = {
   nome: String;
@@ -19,7 +19,6 @@ function App() {
   async function getUsers() {
     try {
       const response = await axios.get("http://localhost:8800/")
-      // Ordem alfabetica -> Trocar para organização por ID
       setUsers(response.data.sort((a: User, b: User) => (a.nome > b.nome ? 1 : -1)))
     } catch (error) {
       toast.error("Algo deu errado, tente novamente!")

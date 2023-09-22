@@ -4,7 +4,6 @@ import { db } from '../db';
 // Onde ira ficar as funcoes de manipulação de dados
 
 // Exporta para o router com a request e o response
-// Aqui nao precisa de req por conta que o usuario nao vai enviar nada  
 
 // Utilizando essa sintaxe para poder usar tipagens genericas para o body. 
 // https://plainenglish.io/blog/typed-express-request-and-response-with-typescript

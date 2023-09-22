@@ -11,7 +11,6 @@ interface FormProps {
     getUsers : () => void
 }
 
-// Como tipar isso corretamente
 export function Form({ onEdit, setOnEdit, getUsers }: FormProps) {
 
     const ref = useRef<HTMLFormElement | null>(null);
